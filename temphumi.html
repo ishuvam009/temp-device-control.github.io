@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Temperature and Humidity Display</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 50px;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    #temperature, #humidity {
+      font-size: 24px;
+      margin: 20px 0;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Temperature and Humidity</h1>
+
+  <div id="temperature">Loading temperature...</div>
+  <div id="humidity">Loading humidity...</div>
+
+  <script>
+    function fetchData(url, callback) {
+      fetch(url)
+        .then(response => response.json())
+        .then(data => callback(data))
+        .catch(error => console.error('Error fetching data:', error));
+    }
+
+    function updateTemperature(data) {
+      console.log('Temperature API response:', data);
+      document.getElementById('temperature').textContent = `Temperature: ${data} °C`;
+    }
+
+    function updateHumidity(data) {
+      console.log('Humidity API response:', data);
+      document.getElementById('humidity').textContent = `Humidity: ${data}%`;
+    }
+
+    function updateData() {
+      // Fetch temperature data
+      fetchData('https://blr1.blynk.cloud/external/api/get?token=Znq0DTC_I0tpSvIECajrsjOc_pTQr27K&v0', updateTemperature);
+
+      // Fetch humidity data
+      fetchData('https://blr1.blynk.cloud/external/api/get?token=Znq0DTC_I0tpSvIECajrsjOc_pTQr27K&v5', updateHumidity);
+    }
+
+    // Initial data update
+    updateData();
+
+    // Set interval for automatic update (every 10 seconds in this example)
+    setInterval(function() {
+      location.reload();
+    }, 3000);
+  </script>
+</body>
+</html>

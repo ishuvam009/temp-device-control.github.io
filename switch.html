@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relay Control</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Relay Control Panel</h1>
+
+    <div>
+        <button class="button" onclick="toggleRelay(1, true)">Turn On Channel 1</button>
+        <button class="button" onclick="toggleRelay(1, false)">Turn Off Channel 1</button>
+        <br>
+        <button class="button" onclick="toggleRelay(2, true)">Turn On Channel 2</button>
+        <button class="button" onclick="toggleRelay(2, false)">Turn Off Channel 2</button>
+        <br>
+        <button class="button" onclick="toggleRelay(3, true)">Turn On Channel 3</button>
+        <button class="button" onclick="toggleRelay(3, false)">Turn Off Channel 3</button>
+        <br>
+        <button class="button" onclick="toggleRelay(4, true)">Turn On Channel 4</button>
+        <button class="button" onclick="toggleRelay(4, false)">Turn Off Channel 4</button>
+    </div>
+
+    <script>
+        const BLYNK_API_URL = "https://blr1.blynk.cloud/external/api/update";
+        const BLYNK_AUTH_TOKEN = "Znq0DTC_I0tpSvIECajrsjOc_pTQr27K";
+
+        function toggleRelay(channel, state) {
+            const apiUrl = `${BLYNK_API_URL}?token=${BLYNK_AUTH_TOKEN}&v${channel}=${state ? 1 : 0}`;
+
+            fetch(apiUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Network response was not ok: ${response.statusText}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log(data);
+                    // Handle the response data if needed
+                })
+                .catch(error => {
+                    console.error('There was a problem with the fetch operation:', error);
+                });
+        }
+    </script>
+
+</body>
+</html>
